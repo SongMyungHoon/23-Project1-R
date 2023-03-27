@@ -1,9 +1,19 @@
 # 송명훈
 
+## 2023.03.27
+---
+* 깃 clone 연결하기  
+  git clone https://github.com/SongMyungHoon/23-Project1-R.git
+
+* 기존 컴퓨터에서 작업진행 시  
+  git pull origin main
+  
+---
 ## 2023.03.23
 ---
 *    패키지 설치 install.packages('ggplot2')  
      ex) install.packages('ggplot2'), install.packages("cowsay")
+
 *    라이브러리 사용 - 라이브러리 사용 library(라이브러리 이름)  
      ex) library(ggplot2), library(cowsay)
 
@@ -87,9 +97,8 @@ thu
  [1] "1월"  "2월"  "3월"  "4월"  "5월"  "6월"  "7월"  "8월"  "9월"  "10월" "11월" "12월"
 ```
 
-
+---
 ## 2023.03.16
-
 ---
 * R언어의 특징  
      * 테이터 분석에 특화된 언어
@@ -98,12 +107,13 @@ thu
      * 미적이고 기능적인 통계 그래프 제공
      * 편리한 프로그래밍 환경
      * 무료 사용
----
+
 * R을 배우는 이유
      * 4차 산업혁명의 중심의 '데이터'
----
+
 * Rstudio 영역
      * 소스영역,  콘솔영역, 환경영역, 파일영역
+
 ---
 코드
 ```R
@@ -124,9 +134,8 @@ thu
 [1] 1
 ```
 
-
+---
 ## 2023.03.09
-
 ---
 ```R
 
