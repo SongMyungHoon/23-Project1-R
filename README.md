@@ -1,4 +1,368 @@
 # 송명훈
+## 2023.04.06
+---
+
+* 매트릭스 사용
+
+```R
+> sore <- matrix(c(90,85,69,78,85,96,49,95,90,80,70,60), nrow = 4)
+> sore
+     [,1] [,2] [,3]
+[1,]   90   85   90
+[2,]   85   96   80
+[3,]   69   49   70
+[4,]   78   95   60
+
+> rownames(sore) <- c('John','Tom','Mare','Jane')
+> colnames(sore) <- c('English','Math','Science')
+> sore
+     English Math Science
+John      90   85      90
+Tom       85   96      80
+Mare      69   49      70
+Jane      78   95      60
+
+View(sore) -- 뷰로 확인
+
+> sore['John','Math']
+[1] 85
+
+> sore['Mare',]
+English    Math Science 
+     69      49      70 
+
+> sore[,'English']
+John  Tom Mare Jane 
+  90   85   69   78 
+
+```
+
+* 데이터프레임 사용
+
+```R
+> city <- c("Seoul","Tokyo","Washington")
+> rank <- c(1,3,2)
+> city.info <- data.frame(city, rank)
+> city.info
+        city rank
+1      Seoul    1
+2      Tokyo    3
+3 Washington    2
+
+> iris[,c(1:2)]
+    Sepal.Length Sepal.Width
+1            5.1         3.5
+2            4.9         3.0
+3            4.7         3.2
+4            4.6         3.1
+5            5.0         3.6
+# ~    ~    ~    ~    ~    ~    ~
+149          6.2         3.4
+150          5.9         3.0
+
+> iris[1:5,c(1,3)]
+  Sepal.Length Petal.Length
+1          5.1          1.4
+2          4.9          1.4
+3          4.7          1.3
+4          4.6          1.5
+5          5.0          1.4
+ 
+> dim(iris)     # 행과 열의 개수 보이기
+[1] 150   5
+> nrow(iris)    # 행의 개수 보이기
+[1] 150
+> colnames(iris)# 열 이름 보이기, name() 함수와 결과 동일
+[1] "Sepal.Length" "Sepal.Width"  "Petal.Length" "Petal.Width"  "Species"    
+
+> head(iris)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> tail(iris)
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+145          6.7         3.3          5.7         2.5 virginica
+146          6.7         3.0          5.2         2.3 virginica
+147          6.3         2.5          5.0         1.9 virginica
+148          6.5         3.0          5.2         2.0 virginica
+149          6.2         3.4          5.4         2.3 virginica
+150          5.9         3.0          5.1         1.8 virginica
+
+> str(iris)
+'data.frame':	150 obs. of  5 variables:
+ $ Sepal.Length: num  5.1 4.9 4.7 4.6 5 5.4 4.6 5 4.4 4.9 ...
+ $ Sepal.Width : num  3.5 3 3.2 3.1 3.6 3.9 3.4 3.4 2.9 3.1 ...
+ $ Petal.Length: num  1.4 1.4 1.3 1.5 1.4 1.7 1.4 1.5 1.4 1.5 ...
+ $ Petal.Width : num  0.2 0.2 0.2 0.2 0.2 0.4 0.3 0.2 0.2 0.1 ...
+ $ Species     : Factor w/ 3 levels "setosa","versicolor",..: 1 1 1 1 1 1 1 1 1 1 ...
+
+> iris[,5]
+  [1] setosa     setosa     setosa     setosa     setosa     setosa     setosa     setosa     setosa    
+# ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~   
+ [37] setosa     setosa     setosa     setosa     setosa     setosa     setosa     setosa     setosa    
+ [46] setosa     setosa     setosa     setosa     setosa     versicolor versicolor versicolor versicolor
+ [55] versicolor versicolor versicolor versicolor versicolor versicolor versicolor versicolor versicolor
+# ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~    ~
+[145] virginica  virginica  virginica  virginica  virginica  virginica 
+Levels: setosa versicolor virginica
+
+> levels(iris[,5])
+[1] "setosa"     "versicolor" "virginica" 
+> table(iris[,"Species"])
+    setosa versicolor  virginica 
+
+> head(iris[,-5])
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1          5.1         3.5          1.4         0.2
+2          4.9         3.0          1.4         0.2
+3          4.7         3.2          1.3         0.2
+4          4.6         3.1          1.5         0.2
+5          5.0         3.6          1.4         0.2
+6          5.4         3.9          1.7         0.4
+
+> head(iris[,-5])
+  Sepal.Length Sepal.Width Petal.Length Petal.Width
+1          5.1         3.5          1.4         0.2
+2          4.9         3.0          1.4         0.2
+3          4.7         3.2          1.3         0.2
+4          4.6         3.1          1.5         0.2
+5          5.0         3.6          1.4         0.2
+6          5.4         3.9          1.7         0.4
+
+> colSums(iris[,c(-1,-5)])
+ Sepal.Width Petal.Length  Petal.Width 
+       458.6        563.7        179.9 
+> 
+
+> z<- matrix(1:20, nrow = 4,ncol = 5)
+> z
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    5    9   13   17
+[2,]    2    6   10   14   18
+[3,]    3    7   11   15   19
+[4,]    4    8   12   16   20
+
+> t(z) # 행렬을 역으로 조회
+     [,1] [,2] [,3] [,4]
+[1,]    1    2    3    4
+[2,]    5    6    7    8
+[3,]    9   10   11   12
+[4,]   13   14   15   16
+[5,]   17   18   19   20
+
+> IR.1 <- subset(iris, Species == "setosa") # setosa 값만 추출
+> head(IR.1)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> tail(IR.1)
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+45          5.1         3.8          1.9         0.4  setosa
+46          4.8         3.0          1.4         0.3  setosa
+47          5.1         3.8          1.6         0.2  setosa
+48          4.6         3.2          1.4         0.2  setosa
+49          5.3         3.7          1.5         0.2  setosa
+50          5.0         3.3          1.4         0.2  setosa
+
+```
+
+* 매트릭스 데이터프라임에 함수 적용
+
+```R
+
+> a <- matrix(1:20,4,5)
+> a
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    5    9   13   17
+[2,]    2    6   10   14   18
+[3,]    3    7   11   15   19
+[4,]    4    8   12   16   20
+> 2*a          # a에 값에 산술만 적용해서 조회만함(오버라이트 X)
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    2   10   18   26   34
+[2,]    4   12   20   28   36
+[3,]    6   14   22   30   38
+[4,]    8   16   24   32   40
+> a
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    1    5    9   13   17
+[2,]    2    6   10   14   18
+[3,]    3    7   11   15   19
+[4,]    4    8   12   16   20
+> a <- a*3     # a에 산술값을 덮어씀(오버라이트 O)
+> a
+     [,1] [,2] [,3] [,4] [,5]
+[1,]    3   15   27   39   51
+[2,]    6   18   30   42   54
+[3,]    9   21   33   45   57
+[4,]   12   24   36   48   60
+
+```
+* 데이터 판별
+```R
+ > class(iris) # iris 데이터셋의 자료구조 확인
+[1] "data.frame"
+> class(state.x77) # state.x77 데이터셋의 자료구조 확인
+[1] "matrix" "array" 
+> is.matrix(iris) # 데이터셋이 매트릭스인지 확인하는 함수
+[1] FALSE
+> is.data.frame(iris) # 데이터셋이 데이터프레임인지 확인하는 함수
+[1] TRUE
+> is.matrix(state.x77)
+[1] TRUE
+> is.data.frame(state.x77)
+[1] FALSE
+
+ ```
+
+* 데이터 변환
+
+```R
+> # 매트릭스를 데이터프레임으로 변환
+> st <- data.frame(state.x77)
+> head(st)
+           Population Income Illiteracy Life.Exp Murder HS.Grad Frost   Area
+Alabama          3615   3624        2.1    69.05   15.1    41.3    20  50708
+Alaska            365   6315        1.5    69.31   11.3    66.7   152 566432
+Arizona          2212   4530        1.8    70.55    7.8    58.1    15 113417
+Arkansas         2110   3378        1.9    70.66   10.1    39.9    65  51945
+California      21198   5114        1.1    71.71   10.3    62.6    20 156361
+Colorado         2541   4884        0.7    72.06    6.8    63.9   166 103766
+> class(st)
+[1] "data.frame"
+
+> # 데이터프레임을 매트릭스으로 변환
+> iris.m <- as.matrix(state.x77)
+> head(iris.m)
+           Population Income Illiteracy Life Exp Murder HS Grad Frost   Area
+Alabama          3615   3624        2.1    69.05   15.1    41.3    20  50708
+Alaska            365   6315        1.5    69.31   11.3    66.7   152 566432
+Arizona          2212   4530        1.8    70.55    7.8    58.1    15 113417
+Arkansas         2110   3378        1.9    70.66   10.1    39.9    65  51945
+California      21198   5114        1.1    71.71   10.3    62.6    20 156361
+Colorado         2541   4884        0.7    72.06    6.8    63.9   166 103766
+> class(iris.m)
+[1] "matrix" "array" 
+
+```
+* 데이터의 입력과 출력
+```R
+> # 데이터입력
+> age <- c(28, 17, 35, 46, 23, 67, 30, 50)
+> age
+[1] 28 17 35 46 23 67 30 50
+
+> # 정보 추출
+> young <- min(age)
+> old <- max(age)
+
+> # 처리 결과 출력
+> cat('가장 젋은 사람의 나이는', young,'이고,',
+      '가장 나이든 사람의 나이는', old, '입니다.\n')
+가장 젋은 사람의 나이는 17 이고, 가장 나이든 사람의 나이는 67 입니다.
+
+```
+* 화면에서 데이터 입력박기
+```R
+# 페키지 설치 및 사용
+install.packages('svDialogs') # 따음표 사용
+library(svDialogs) # 따음표 사용X
+
+# 화면에서 입력 값 받아 가공해 보여주기
+> user.input <- dlgInput('Input income')$res
+> user.input
+[1] "500"
+> income <- as.numeric(user.input)
+> income
+[1] 500
+> tax <- income * 0.05
+> cat('세금:', tax)
+세금: 25
+
+```
+
+* print()와 cat() 비교
+
+```R
+> x <- 26
+> y <- '입니다'
+> z <- c(10,20,30,40)
+> print(x) # 하나의 값 출력 cat도 같음
+[1] 26
+> print(y) # 하나의 값 출력 cat도 같음
+[1] "입니다"
+> print(z) # 백터 출력 cat도 같음
+[1] 10 20 30 40
+
+> print(iris[1:5,]) # 데이터프레임 출력
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+> cat(iris[1:5],'\n') # 데이터프레임 출력(에러 발생)
+# > Error 발생
+
+> cat(x,y,'\n') # 두 값을 연결하여 출력
+26 입니다 
+> print(x,y) # 두개의 값 출력(에러 발생)
+# > Error 발생
+
+```
+
+* 작업폴더 설정
+
+```R
+getwd() # 작업 폴더 확인하기
+setwd('D:/602377108_SMH') # 작업 폴더 변경하기
+
+```
+
+* csv 파일에서 데이터 읽기
+
+```R
+> air <- read.csv('airquality.csv', header=T)
+> head(air)
+  Ozone Solar.R Wind Temp Month Day
+1    41     190  7.4   67     5   1
+2    36     118  8.0   72     5   2
+3    12     149 12.6   74     5   3
+4    18     313 11.5   62     5   4
+5    NA      NA 14.3   56     5   5
+6    28      NA 14.9   66     5   6
+> class(air)
+[1] "data.frame"
+
+```
+
+* csv 파일일 생성
+```R
+# 데이터 추출
+> my.iris <- subset(iris, Species == 'setosa')
+> head(my.iris)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+
+# csv파일로 생성
+> write.csv(my.iris, 'my_iris.csv', row.names = F)
+
+```
+
+---
 ## 2023.03.30
 ---
 * 현재 Environment 확인 - ls()  
