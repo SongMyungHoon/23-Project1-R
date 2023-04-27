@@ -1,4 +1,199 @@
 # 송명훈
+
+## 2023.04.27
+
+* 막대그래프 작성의 기초
+
+```R
+# 도수분포표 계산하기
+> favorite <- c('winter','summer','spring','summer','summer','fall','fall','fall','summer','spring','spring')
+
+> favorite
+ [1] "winter" "summer" "spring" "summer" "summer" "fall"   "fall"   "fall"  
+ [9] "summer" "spring" "spring"
+
+> table(favorite)
+favorite
+  fall spring summer winter 
+     3      3      4      1 
+
+# 막대그래프 작성의 기초
+> ds <- table(favorite)
+> ds
+favorite
+  fall spring summer winter 
+     3      3      4      1 
+# 막대그래프로 조회 함수 # barplot(테이블, main = 테이블타이틀, col = 색상, , 
+> barplot(ds, main = 'Favorite Season') 
+> barplot(ds, main = 'Favorite Season', col = c('#ffffff','red','blue','green')
+          , xlab = '계절'                         # xlab/ylab xy명
+          , ylab = '빈도수'
+          , horiz=TRUE                            # horiz = 가로막대
+          , names = c('가을','봄','여름','겨울')   # names = 막대이름 
+          , las=2)                                # las = 0/1/2/3 - 정상/수평/축기준수직/수직
+```
+
+```R
+# 랜덤색상 
+> rainbow(4)
+[1] "#FF0000" "#80FF00" "#00FFFF" "#8000FF"
+
+```
+
+* 중첩 그룸의 막대그래프
+
+```R
+> age.A <- c(13709, 10974, 7979, 5000, 4250)
+> age.B <- c(17540, 29701, 36209, 33947, 24487)
+> age.C <- c(991, 2195, 5366, 12980, 19007)
+
+> ds <- rbind(age.A, age.B, age.C)
+> colnames(ds) <- c('1970','1990','2010','2030','2050')
+> ds
+       1970  1990  2010  2030  2050
+age.A 13709 10974  7979  5000  4250
+age.B 17540 29701 36209 33947 24487
+age.C   991  2195  5366 12980 19007
+
+> # 중첩 그래프 작성 
+> barplot(ds, main = '인구 추정'
+          , col = rainbow(3)  # col = 색상
+          , beside = TRUE     # beside = 중첩아닌형태
+          # legend.text = T   # 색인설명 legend.text = T(색인)
+          , legend.text = c('0~14세','15~64세','65세이상')  #text 이름변경
+          # args.legend(x 출력 위치 왼쪽/오른쪽,테두리선(n/o), inset x,y축이동)
+          , args.legend = list(x='topright',bty='n',inset=c(-0.25,0))
+          )
+
+```
+
+* 히스토그램을 작성
+
+```R
+> head(cars)
+  speed dist
+1     4    2
+2     4   10
+3     7    4
+4     7   22
+5     8   16
+6     9   10
+
+> dist <- cars[,2]
+> dist
+ [1]   2  10   4  22  16  10  18  26  34  17  28  14  20  24  28  26  34  34  46  26  36  60  80  20  26  54  32  40  32  40  50
+[32]  42  56  76  84  36  46  68  32  48  52  56  64  66  54  70  92  93 120  85
+
+# 히스토그램 작성
+> hist(dist,
++      main = 'Histogram for 제동거리', #제목
++      xlab = '제동거리',     # x축 레이블
++      ylab = '빈도수',       # y축 레이블
++      border = 'blue',       # 막대의 테두리색
++      col = 'green',         # 막대의 색상
++      las=2,
++      breaks=5)
+
+> result <- hist(dist, main = 'histogram for 제동거리', breaks=5)
+> result
+$breaks
+[1]   0  20  40  60  80 100 120
+
+$counts
+[1] 10 18 11  6  4  1
+
+$density
+[1] 0.010 0.018 0.011 0.006 0.004 0.001
+
+$mids
+[1]  10  30  50  70  90 110
+
+$xname
+[1] "dist"
+
+$equidist
+[1] TRUE
+
+attr(,"class")
+[1] "histogram"
+
+```
+
+* 다중 그래프
+```R
+par(mfrow=c(2,2),mar=c(3,3,4,2)) #화면 분할 2x2
+
+hist(iris$Sepal.Length, # 그래프1
+     main = 'Sepal.Length',
+     col ='orange')
+
+barplot(table(mtcars$cyl), # 그래프2
+        main = 'mtcars',
+        col=c('red','green','blue'))
+
+barplot(table(mtcars$gear), # 그래프3
+        main = 'mtcars',
+        col=rainbow(3),
+        horiz=TRUE)
+
+pie(table(mtcars$cyl), # 그래프4
+    main = 'mtcars',
+    col=topo.colors(3),
+    radius=2)
+
+par(mfrow=c(1,1),mar=c(5,4,4,2)+.1) #화면 분할 취소
+
+```
+* 원그래프와 선그래프
+
+```R
+#데이터 입력
+> favorite <- c('winter','summer','spring','summer','summer','fall','fall','fall','summer','spring','spring')
+> favorite
+ [1] "winter" "summer" "spring" "summer" "summer" "fall"   "fall"   "fall"   "summer" "spring" "spring"
+
+> table(favorite)
+favorite
+  fall spring summer winter 
+     3      3      4      1 
+
+> ds <- table(favorite)
+> ds
+favorite
+  fall spring summer winter 
+     3      3      4      1 
+
+# 원그래프 출력
+> pie(ds, main='선호 계절',
++     radius = 1)
+
+# 패키지 사용하여 3D원그래프 출력
+install.packages('plotrix')
+library(plotrix)
+# 3D원 출력
+pie3D(ds, main='선호 계절',
+    col = rainbow(5),
+    radius = 1)
+
+```
+
+* 꺽은선 그래프
+
+```R
+month <- 1:12
+late <- c(5, 8, 7, 9, 4, 6, 12, 13, 8, 6, 6, 4)
+plot(month,
+     late,
+     main='지각생 통계',
+     type = 'l',
+     lty=1,
+     lwd=1,
+     xlab = 'Month',
+     ylab = 'Late cnt')
+     
+```
+
+---
 ## 2023.04.13
 
 * 실행 결과를 파일로 출력
@@ -155,8 +350,8 @@ mydiv <-function(x,y){
 
 ```
 
-## 2023.04.06
 ---
+## 2023.04.06
 
 * 매트릭스 사용
 
@@ -520,7 +715,7 @@ setwd('D:/602377108_SMH') # 작업 폴더 변경하기
 
 ---
 ## 2023.03.30
----
+
 * 현재 Environment 확인 - ls()  
 * 삭제 - rm(list<-ls())  
 ---
@@ -715,8 +910,9 @@ y "월" "화" "수" "목"
 
 ```
 
-## 2023.03.27
 ---
+## 2023.03.27
+
 * 깃 clone 연결하기  
   git clone https://github.com/SongMyungHoon/23-Project1-R.git
 
@@ -725,7 +921,7 @@ y "월" "화" "수" "목"
   
 ---
 ## 2023.03.23
----
+
 *    패키지 설치 install.packages('ggplot2')  
      ex) install.packages('ggplot2'), install.packages("cowsay")
 
@@ -814,7 +1010,7 @@ thu
 
 ---
 ## 2023.03.16
----
+
 * R언어의 특징  
      * 테이터 분석에 특화된 언어
      * 탄탄한 사용자 커뮤니티
@@ -851,7 +1047,7 @@ thu
 
 ---
 ## 2023.03.09
----
+
 ```R
 
 
