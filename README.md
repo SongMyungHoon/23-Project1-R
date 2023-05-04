@@ -1,5 +1,129 @@
 # 송명훈
 
+## 2023.05.04
+
+* 복수의 선그래프 작성
+
+```R
+month = 1:12 # 데이터 입력
+late1 = c(5,8,7,9,4,6,12,13,8,6,6,4)
+late2 = c(4,6,5,7,8,10,7,8,4,12,5,8)
+
+plot(month,
+     late,
+     main='지각생 통계',
+     type = 'b',
+     lty=1,
+     col = 'red',
+     lwd=1,
+     xlab = 'Month',
+     ylab = 'Late cnt'
+)
+
+lines(month,
+      late2,
+      type = 'b',
+      col = 'blue'
+)
+
+```
+
+* 상자그림
+
+```R
+> dist <- cars[,2]
+> boxplot(dist,mmain='자동차제동거리') #간단한 상자그림 출력
+
+> boxplot.stats(dist)
+$stats
+[1]  2 26 36 56 93
+$n
+[1] 50
+$conf
+[1] 29.29663 42.70337
+$out
+[1] 120
+
+boxplot(Petal.Length~Species, # 데이터 그룹정보
+        data = iris, # 데이터가 저장된 자료구조
+        main = '품종별 꽃잎의 길이', # 그래프의 제목
+        col = c('green','yellow','blue') # 상자들의 색
+) 
+
+```
+
+* 산점도
+
+```R
+wt <- mtcars$wt # 중량 데이터
+mpg <- mtcars$mpg #연비 데이터
+plot(wt,mpg,
+     main = '중량-연비 그래프',
+     xlab = '중량',
+     ylab = '연비',
+     col = 'red',
+     pch = 19
+)
+
+# 멀티 산점도
+  vars <- c('mpg','disp','drat','wt') # 대상 변수
+  target <- mtcars[,vars] # 대상 데이터 생성
+  plot(target,
+       main = 'multi plots', # 대상 데이터
+)
+
+```
+
+* 여러 변수들 간의 산점도
+
+```R
+group <- as.numeric(iris$Species)
+group
+
+iris.2 <- iris[,3:4]
+color <- c('red','green','blue')
+
+plot(iris.2,
+     main = 'Iris plot',
+     pch = group,
+     col = color[group]
+)
+
+legend(x = 'bottomright',
+     legend = levels(iris$Species),
+     col = c('red','green','blue'),
+     pch = c(1:3)
+)
+
+```
+
+* 단일변수 데이터를 분석
+
+```R
+
+install.packages('carData')
+library(carData)
+
+#W (1) 데이터 준비
+room.class <- TitanicSurvival$passengerClass
+room.class
+
+# (2) 도수분포 계산
+tbl <- table(room.class)
+tbl
+sum(tbl)
+
+# (3) 막대그래프 작성
+barplot(tbl,
+        main = '선실별 탑승객',
+        xlab = '선실 등급',
+        ylab = '탑승객수',
+        col = c('blue','green', 'yellow')
+)
+
+```
+
+---
 ## 2023.04.27
 
 * 막대그래프 작성의 기초
@@ -185,7 +309,7 @@ late <- c(5, 8, 7, 9, 4, 6, 12, 13, 8, 6, 6, 4)
 plot(month,
      late,
      main='지각생 통계',
-     type = 'l',
+     type = 'l', # l 선, b/o 선위에 점, s 꺽인선
      lty=1,
      lwd=1,
      xlab = 'Month',
