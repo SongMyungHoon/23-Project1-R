@@ -1,5 +1,150 @@
 # 송명훈
+## 2023.05.11
 
+* ### 두 변수의 상관관계
+```R
+# 2개 열의 산점도 1
+> # 데이터 확인
+> head(pressure)
+  temperature pressure
+1           0   0.0002
+2          20   0.0012
+3          40   0.0060
+4          60   0.0300
+5          80   0.0900
+6         100   0.2700
+ 
+> # 산점도 작성
+> plot(pressure$temperature,
++      pressure$pressure,
++      main = '온도와 기압',
++      xlab = '온도(화씨)',
++      ylab = '기압'
++ )
+
+# 2개 열 산점도 2
+# 데이터 확인
+> head(cars)
+  speed dist
+1     4    2
+2     4   10
+3     7    4
+4     7   22
+5     8   16
+6     9   10
+
+> # 다중변수의 산점도 작성
+> plot(cars$speed,
++      cars$dist,
++      main = '자동차 속도와 제동거리',
++      xlab = '속도',
++      ylab = '제동거리'
++ )
+
+> # 상관계수
+> cor(cars$speed, cars$dist)
+[1] 0.8068949
+```
+
+* ### 백터의 결측값
+```R
+> z <- c(1,2,3,NA,5,NA,8)
+> sum(z)
+[1] NA
+> is.na(z)
+[1] FALSE FALSE FALSE  TRUE FALSE  TRUE FALSE
+> sum(is.na(z))
+[1] 2
+> sum(z, na.rm=TRUE)
+[1] 19
+
+> z1 <- c(1,2,3,NA,5,NA,8)
+> z2 <- c(5,8,1,NA,3,NA,7)
+> z1[is.na(z1)] <- 0     # NA를 0로 치환
+> z1
+[1] 1 2 3 0 5 0 8
+> z3 <- as.vector(na.omit(z2))     # NA를 제거
+> z3
+[1] 5 8 1 3 7
+```
+
+* ### 특정값에 NA 대입
+```R
+# NA를 포함하는 test 데이터 생성
+> x <- iris
+> x[1,2] <- NA;
+> x[1,3] <- NA;
+> x[2,3] <- NA;
+> x[3,4] <- NA;
+> head(x)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1          NA           NA         0.2  setosa
+2          4.9         3.0           NA         0.2  setosa
+3          4.7         3.2          1.3          NA  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+ 
+```
+
+* ### 매트릭스와 데이터프레임의 결측값
+```R
+# 열(col)별로 결측값 확인
+# for를 이용한 방법
+> for(i in 1:ncol(x)){
++   this.na <- is.na(x[,i])
++   cat(colnames(x)[i], '\t',sum(this.na), '\n')
++ }
+Sepal.Length     0 
+Sepal.Width      1 
+Petal.Length     2 
+Petal.Width      1 
+Species          0 
+
+# apply를 이용한 방법
+> col_na <- function(y){
++   return(sum(is.na(y)))
++ }
+> na_count <-apply(x,2,FUN=col_na)
+> na_count
+Sepal.Length  Sepal.Width Petal.Length  Petal.Width      Species 
+           0            1            2            1            0 
+
+# 행(row)별로 결측값 확인
+> rowSums(is.na(x))
+  [1] 2 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ [67] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+[133] 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+> sum(rowSums(is.na(x)>0))
+[1] 4
+> sum(is.na(x))
+[1] 4
+
+> head(x)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1          NA           NA         0.2  setosa
+2          4.9         3.0           NA         0.2  setosa
+3          4.7         3.2          1.3          NA  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+> x[!complete.cases(x),]
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1          NA           NA         0.2  setosa
+2          4.9         3.0           NA         0.2  setosa
+3          4.7         3.2          1.3          NA  setosa
+> y <- x[complete.cases(x),]
+> head(y)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+7          4.6         3.4          1.4         0.3  setosa
+8          5.0         3.4          1.5         0.2  setosa
+9          4.4         2.9          1.4         0.2  setosa
+
+```
+---
 ## 2023.05.04
 
 * 복수의 선그래프 작성
