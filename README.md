@@ -1,6 +1,193 @@
 # 송명훈
-## 2023.05.11
+## 2023.05.18
+* ## 정렬
 
+```R
+# 숫자정렬
+> v1 <- c(1,7,6,8,4,2,3)
+> v1 <- sort(v1) # 오름차순
+> v1
+[1] 1 2 3 4 6 7 8
+> v2 <- sort(v1, decreasing = T) # 내림차순
+> v2
+[1] 8 7 6 4 3 2 1
+
+# 한글 정렬
+> name <- c('정대일', '강재구', '신현석', '홍길동')
+> sort(name)
+[1] "강재구" "신현석" "정대일" "홍길동"
+> sort(name, decreasing = T)
+[1] "홍길동" "정대일" "신현석" "강재구"
+
+# 정렬하여 인덱스 값 출력
+> order(name)
+[1] 2 3 1 4
+> order(name, decreasing = T)
+[1] 4 1 3 2
+> idx <- order(name)
+> name[idx]
+[1] "강재구" "신현석" "정대일" "홍길동"
+
+```
+
+* ## 특정 열의 값들을 기준으로 행을 재배열하는 방법
+
+```R
+> head(iris)
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+
+> head(order(iris$Sepal.Length))
+[1] 14  9 39 43 42  4
+
+> head(iris[order(iris$Sepal.Length),]) # 오름차순으로 정렬
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+14          4.3         3.0          1.1         0.1  setosa
+9           4.4         2.9          1.4         0.2  setosa
+39          4.4         3.0          1.3         0.2  setosa
+43          4.4         3.2          1.3         0.2  setosa
+42          4.5         2.3          1.3         0.3  setosa
+4           4.6         3.1          1.5         0.2  setosa
+
+> head(iris[order(iris$Sepal.Length, decreasing = T),])  # 내일차순으로 정렬
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+132          7.9         3.8          6.4         2.0 virginica
+118          7.7         3.8          6.7         2.2 virginica
+119          7.7         2.6          6.9         2.3 virginica
+123          7.7         2.8          6.7         2.0 virginica
+136          7.7         3.0          6.1         2.3 virginica
+106          7.6         3.0          6.6         2.1 virginica
+
+> iris.new <- iris[order(iris$Sepal.Length),] # 정렬된 데이터를 저장
+> head(iris.new)
+   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+14          4.3         3.0          1.1         0.1  setosa
+9           4.4         2.9          1.4         0.2  setosa
+39          4.4         3.0          1.3         0.2  setosa
+43          4.4         3.2          1.3         0.2  setosa
+42          4.5         2.3          1.3         0.3  setosa
+4           4.6         3.1          1.5         0.2  setosa
+
+> # 정렬 기준이 2개인 경우
+> head(iris[order(iris$Sepal.Length, decreasing = T, iris$Sepal.Length),])
+    Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+132          7.9         3.8          6.4         2.0 virginica
+118          7.7         3.8          6.7         2.2 virginica
+119          7.7         2.6          6.9         2.3 virginica
+123          7.7         2.8          6.7         2.0 virginica
+136          7.7         3.0          6.1         2.3 virginica
+106          7.6         3.0          6.6         2.1 virginica
+
+```
+
+* ## 샘플링과 조합이란 무엇인가
+
+```R
+> x <- 1:100
+> sample(x, size = 10, replace = FALSE) # 비복원식 샘플추출
+ [1] 97 48 51 67 37 93 60  7 16  9
+> sample(x, size = 10, replace = TRUE) # 복원식 샘플추출
+ [1] 90 74 32 18 27 55 72 15 28  8
+
+
+> idx <- sample(1:nrow(iris), size = 50, replace = F)
+> iris.50 <- iris[idx,]
+> dim(iris.50)
+[1] 50  5
+> head(iris.50)
+    Sepal.Length Sepal.Width Petal.Length Petal.Width    Species
+53           6.9         3.1          4.9         1.5 versicolor
+14           4.3         3.0          1.1         0.1     setosa
+17           5.4         3.9          1.3         0.4     setosa
+148          6.5         3.0          5.2         2.0  virginica
+71           5.9         3.2          4.8         1.8 versicolor
+83           5.8         2.7          3.9         1.2 versicolor
+
+```
+* ## 조합
+```R
+ combn(1:5,3) # 1~5에서 3개를 뽑는 조합
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]    1    1    1    1    1    1    2    2    2     3
+[2,]    2    2    2    3    3    4    3    3    4     4
+[3,]    3    4    5    4    5    5    4    5    5     5
+> x <- c("red","green","blue","black","white")
+> com <- combn(x,2)
+> com
+     [,1]    [,2]   [,3]    [,4]    [,5]    [,6]    [,7]    [,8]    [,9]    [,10]  
+[1,] "red"   "red"  "red"   "red"   "green" "green" "green" "blue"  "blue"  "black"
+[2,] "green" "blue" "black" "white" "blue"  "black" "white" "black" "white" "white"
+
+> for(i in 1:ncol(com)) {
++   cat(com[,i], "\n")
++ }
+red green 
+red blue 
+red black 
+red white 
+green blue 
+green black 
+green white 
+blue black 
+blue white 
+black white 
+
+```
+
+* ## 품종별 꽃잎 꽃받침의 폭과 길이의 평균
+```R
+# aggregate(데이터셋, 열의 값, 평균)
+> agg <- aggregate(iris[,-5], by=list(iris$Species), FUN = mean) 
+> agg
+     Group.1 Sepal.Length Sepal.Width Petal.Length Petal.Width
+1     setosa        5.006       3.428        1.462       0.246
+2 versicolor        5.936       2.770        4.260       1.326
+3  virginica        6.588       2.974        5.552       2.026
+
+> agg <- aggregate(mtcars, by=list(cyl=mtcars$cyl, vs=mtcars$vs), FUN = max)
+> agg
+  cyl vs  mpg cyl  disp  hp drat    wt  qsec vs am gear carb
+1   4  0 26.0   4 120.3  91 4.43 2.140 16.70  0  1    5    2
+2   6  0 21.0   6 160.0 175 3.90 2.875 17.02  0  1    5    6
+3   8  0 19.2   8 472.0 335 4.22 5.424 18.00  0  1    5    8
+4   4  1 33.9   4 146.7 113 4.93 3.190 22.90  1  1    5    2
+5   6  1 21.4   6 258.0 123 3.92 3.460 20.22  1  0    4    4
+
+```
+
+* ## 나무지도
+```R
+install.packages('treemap')
+library(treemap)
+
+> data(GNI2014)
+> head(GNI2014)
+  iso3          country     continent population    GNI
+3  BMU          Bermuda North America      67837 106140
+4  NOR           Norway        Europe    4676305 103630
+5  QAT            Qatar          Asia     833285  92200
+6  CHE      Switzerland        Europe    7604467  88120
+7  MAC Macao SAR, China          Asia     559846  76270
+8  LUX       Luxembourg        Europe     491775  75990
+
+treemap(GNI2014,
+        index=c('continent', 'iso3'),
+        vSize = 'population',
+        vColor = 'GNI',
+        type = 'value',
+        #bg.labels = 'yellow',
+        title = "World's GNI")
+
+```
+
+---
+## 2023.05.11
+---
 * ### 두 변수의 상관관계
 ```R
 # 2개 열의 산점도 1
