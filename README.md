@@ -1,6 +1,48 @@
 # 송명훈
+## 2023.05.25
+
+* 방사형 차트
+
+```R
+> # (1) 데이터 준비
+> score <- c(80, 60, 95, 85, 40)
+> max.score <- rep(100, 5)
+> min.score <- rep(0, 5)
+> ds <- rbind(max.score, min.score, score)
+> ds <- data.frame(ds)
+> colnames(ds) <- c('국어','영어','수학','물리','음악')
+
+> ds
+          국어 영어 수학 물리 음악
+max.score  100  100  100  100  100
+min.score    0    0    0    0    0
+score       80   60   95   85   40
+
+> radarchart(ds)
+```
+* 방사형 차트 2
+```R
+# 매개변수의 지정
+> radarchart(ds, # 데이터프레임
++            pcol = 'dark green', # 다각형 선의 색
++            pfcol = rgb(0.2,0.5,0.5,0.5), # 다각형 내부 색
++            plwd=3, # 다각형 선의 두계
++            cglcol='grey', # 거미줄의 색
++            cglty=1, # 거미줄의 타입
++            cglwd=0.8, # 거미줄의 두께
++            axistype=1, # 축의 레이블 타입
++            seg=4, # 축의 눈금 분할
++            axislabcol='grey', # 축의 레이블 색
++            caxislabels=seq(0,100,25) # 축릐 레이블 값
++            )
+> 
+```
+
+---
+
 ## 2023.05.18
-* ## 정렬
+---
+* 정렬
 
 ```R
 # 숫자정렬
@@ -30,7 +72,7 @@
 
 ```
 
-* ## 특정 열의 값들을 기준으로 행을 재배열하는 방법
+* 특정 열의 값들을 기준으로 행을 재배열하는 방법
 
 ```R
 > head(iris)
@@ -85,7 +127,7 @@
 
 ```
 
-* ## 샘플링과 조합이란 무엇인가
+* 샘플링과 조합이란 무엇인가
 
 ```R
 > x <- 1:100
@@ -109,7 +151,7 @@
 83           5.8         2.7          3.9         1.2 versicolor
 
 ```
-* ## 조합
+* 조합
 ```R
  combn(1:5,3) # 1~5에서 3개를 뽑는 조합
      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
@@ -139,7 +181,7 @@ black white
 
 ```
 
-* ## 품종별 꽃잎 꽃받침의 폭과 길이의 평균
+* 품종별 꽃잎 꽃받침의 폭과 길이의 평균
 ```R
 # aggregate(데이터셋, 열의 값, 평균)
 > agg <- aggregate(iris[,-5], by=list(iris$Species), FUN = mean) 
@@ -160,7 +202,7 @@ black white
 
 ```
 
-* ## 나무지도
+*  나무지도
 ```R
 install.packages('treemap')
 library(treemap)
